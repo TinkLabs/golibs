@@ -10,6 +10,7 @@ import (
 
 	"github.com/tinklabs/b2c_product/src/constant"
 	"github.com/tinklabs/golibs/cmd"
+	"github.com/tinklabs/golibs/config"
 	"github.com/tinklabs/golibs/consul"
 	terr "github.com/tinklabs/golibs/error"
 	"github.com/tinklabs/golibs/log"
@@ -26,6 +27,8 @@ func Init() {
 	cmd.Init()
 	log.Init()
 	consul.Init()
+	config.Init()
+	DB.Init()
 
 	if !cmd.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
