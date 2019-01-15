@@ -12,6 +12,7 @@ import (
 	"github.com/tinklabs/golibs/cmd"
 	"github.com/tinklabs/golibs/config"
 	"github.com/tinklabs/golibs/consul"
+	"github.com/tinklabs/golibs/db"
 	terr "github.com/tinklabs/golibs/error"
 	"github.com/tinklabs/golibs/log"
 	"github.com/tinklabs/golibs/utils"
@@ -28,7 +29,7 @@ func Init() {
 	log.Init()
 	consul.Init()
 	config.Init()
-	DB.Init()
+	db.Init()
 
 	if !cmd.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
