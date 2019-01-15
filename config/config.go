@@ -22,12 +22,10 @@ func Init() {
 	}
 
 	data := make(map[string]interface{}, 0)
-	err = json.Unmarshal(pair.Value, data)
+	err = json.Unmarshal(pair.Value, &Data)
 	if err != nil {
 		panic(err)
 	}
-
-	Data = data
 }
 
 func TakeDbUrl() string {
