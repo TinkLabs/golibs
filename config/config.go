@@ -21,7 +21,6 @@ func Init() {
 		panic(err)
 	}
 
-	data := make(map[string]interface{}, 0)
 	err = json.Unmarshal(pair.Value, &Data)
 	if err != nil {
 		panic(err)
