@@ -31,7 +31,7 @@ func Init() {
 }
 
 func TakeDbUrl() string {
-	if v, isExist := data["db_url"]; isExist {
+	if v, isExist := Data["db_url"]; isExist {
 		if v, ok := v.(string); ok {
 			return v
 		} else {
