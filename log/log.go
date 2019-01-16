@@ -53,8 +53,6 @@ func Init() {
 		mw := io.MultiWriter(os.Stdout, f)
 		logger.SetOutput(mw)
 	}
-
-	fmt.Println("log init done")
 }
 
 // LoggerWithWriter instance a Logger middleware with the specified writter buffer.

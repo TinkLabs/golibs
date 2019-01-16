@@ -8,7 +8,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/tinklabs/b2c_product/src/constant"
 	"github.com/tinklabs/golibs/cmd"
 	"github.com/tinklabs/golibs/config"
 	"github.com/tinklabs/golibs/consul"
@@ -72,9 +71,9 @@ func Stop() {
 	log.Info("Server exiting")
 }
 
-func Register(method, source string, callback func(*gin.Context)) {
+func Register(version, method, source string, callback func(*gin.Context)) {
 	cf := cmd.GetCmdFlag()
-	url := fmt.Sprintf("/api/%s/%s%s", cf.ServerName, constant.Version, source)
+	url := fmt.Sprintf("/api/%s/%s%s", cf.ServerName, version, source)
 
 	switch method {
 	case "GET":

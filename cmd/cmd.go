@@ -55,8 +55,6 @@ func Init() {
 		ServerPort:    port,
 		ConsulAddress: consulAddress,
 	}
-
-	fmt.Println("cmd init done")
 }
 
 func GetCmdFlag() *CmdFlag {

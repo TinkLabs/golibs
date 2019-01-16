@@ -21,7 +21,6 @@ type ConsulClient struct {
 	TTL           time.Duration
 	Agent         *consul.Agent
 	KV            *consul.KV
-	Catalog       *consul.Catalog
 }
 
 func GetConsulClient() *ConsulClient {
@@ -40,7 +39,6 @@ func Init() {
 
 	agent := c.Agent()
 	kv := c.KV()
-	catalog := c.Catalog()
 
 	uuid, err := utils.UUID()
 	if err != nil {
@@ -57,10 +55,7 @@ func Init() {
 		TTL:           time.Second * 30,
 		Agent:         agent,
 		KV:            kv,
-		Catalog:       catalog,
 	}
-
-	fmt.Println("consul init done")
 }
 
 func (c *ConsulClient) Register() {
