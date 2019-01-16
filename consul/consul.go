@@ -31,7 +31,7 @@ func Init() {
 	cf := cmd.GetCmdFlag()
 
 	dc := consul.DefaultConfig()
-	dc.Address = cf.ConsulAddress
+	dc.Address = fmt.Sprintf("%s:%s", cf.ConsulAddress, cf.ConsulPort)
 	c, err := consul.NewClient(dc)
 	if err != nil {
 		panic(err)

@@ -10,10 +10,12 @@ import (
 
 type CmdFlag struct {
 	Debug         bool
+	Env           string
 	ServerName    string
 	ServerAddress string
 	ServerPort    int
 	ConsulAddress string
+	ConsulPort    string
 }
 
 var cmdFlag *CmdFlag
@@ -23,7 +25,8 @@ func Init() {
 	var debug, dontCheck bool
 
 	serverName := GetEnvPanic("SERVER_NAME")
-	consulAddress := GetEnvWithDefault("CONSUL_ADDRESS", "http://127.0.0.1:8500")
+	consulAddress := GetEnvWithDefault("CONSUL_ADDRESS", "http://127.0.0.1")
+	consulPort := GetEnvWithDefault("CONSUL_PORT", "8500")
 
 	if GetEnvWithDefault("DONT_CHECK_ETH_NAME", "false") == "false" {
 		dontCheck = false
@@ -54,6 +57,7 @@ func Init() {
 		ServerAddress: serverAddress,
 		ServerPort:    port,
 		ConsulAddress: consulAddress,
+		ConsulPort:    consulPort,
 	}
 }
 
