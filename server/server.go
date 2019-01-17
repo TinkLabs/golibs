@@ -41,6 +41,10 @@ func Init() {
 	router = r
 }
 
+func GetRouter() *gin.Engine {
+	return router
+}
+
 func Start() {
 	cc := consul.GetConsulClient()
 	cc.Register()
