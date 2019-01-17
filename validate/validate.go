@@ -2,13 +2,13 @@ package validate
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	validator "gopkg.in/go-playground/validator.v9"
 
 	terr "github.com/tinklabs/golibs/error"
 	"github.com/tinklabs/golibs/log"
+	"github.com/tinklabs/golibs/utils"
 )
 
 var validate *validator.Validate
@@ -103,12 +103,10 @@ func Check() gin.HandlerFunc {
 }
 
 func abort(c *gin.Context, err *terr.TError) {
-	ts := time.Now().UnixNano() / 1000000
-
 	c.AbortWithStatusJSON(http.StatusOK, &Response{
 		Common: &Common{
 			MsgType:   "response",
-			Timestamp: ts,
+			Timestamp: utils.GetNowTs(),
 			RequestID: c.GetString("requestID"),
 		},
 		ErrorCode: int(err.Code),
