@@ -18,7 +18,7 @@ import (
 )
 
 var (
-	Server *http.Server
+	server *http.Server
 	router *gin.Engine
 )
 
@@ -50,13 +50,13 @@ func Start() {
 	cc.Register()
 
 	cf := cmd.GetCmdFlag()
-	Server = &http.Server{
+	server = &http.Server{
 		Addr:    fmt.Sprintf(":%d", cf.ServerPort),
 		Handler: router,
 	}
 
 	log.Info("Server is listening on ", cf.ServerPort)
-	if err := Server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		cc.Deregister()
 		log.Fatal(err)
 	}
@@ -68,7 +68,7 @@ func Stop() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	if err := Server.Shutdown(ctx); err != nil {
+	if err := server.Shutdown(ctx); err != nil {
 		log.Fatal("Server Shutdown:", err)
 	}
 	log.Info("Server exiting")
