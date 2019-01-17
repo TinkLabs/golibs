@@ -1,14 +1,11 @@
-package validate
+package server
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	validator "gopkg.in/go-playground/validator.v9"
 
 	terr "github.com/tinklabs/golibs/error"
 	"github.com/tinklabs/golibs/log"
-	"github.com/tinklabs/golibs/utils"
 )
 
 var validate *validator.Validate
@@ -64,13 +61,13 @@ func Check() gin.HandlerFunc {
 
 		if err := c.ShouldBindJSON(&r); err != nil {
 			log.Warn(err)
-			abort(c, terr.ErrRequest)
+			Abort(c, terr.ErrRequest)
 			return
 		}
 
 		if err := validate.Struct(&r); err != nil {
 			log.Warn(err)
-			abort(c, terr.ErrRequest)
+			Abort(c, terr.ErrRequest)
 			return
 		}
 
@@ -79,7 +76,7 @@ func Check() gin.HandlerFunc {
 		if v, isExist := r.Param["pageIndex"]; isExist {
 			if v, ok := v.(float64); !ok {
 				log.Error("pageIndex type is wrong")
-				abort(c, terr.ErrRequest)
+				Abort(c, terr.ErrRequest)
 				return
 			} else {
 				c.Set("pageIndex", int(v))
@@ -89,7 +86,7 @@ func Check() gin.HandlerFunc {
 		if v, isExist := r.Param["pageSize"]; isExist {
 			if v, ok := v.(float64); !ok {
 				log.Error("pagSize type is wrong")
-				abort(c, terr.ErrRequest)
+				Abort(c, terr.ErrRequest)
 				return
 			} else {
 				c.Set("pageSize", int(v))
@@ -100,16 +97,4 @@ func Check() gin.HandlerFunc {
 
 		c.Next()
 	}
-}
-
-func abort(c *gin.Context, err *terr.TError) {
-	c.AbortWithStatusJSON(http.StatusOK, &Response{
-		Common: &Common{
-			MsgType:   "response",
-			Timestamp: utils.GetNowTs(),
-			RequestID: c.GetString("requestID"),
-		},
-		ErrorCode: int(err.Code),
-		ErrorMsg:  err.Desc,
-	})
 }

@@ -15,7 +15,6 @@ import (
 	terr "github.com/tinklabs/golibs/error"
 	"github.com/tinklabs/golibs/log"
 	"github.com/tinklabs/golibs/utils"
-	"github.com/tinklabs/golibs/validate"
 )
 
 var (
@@ -37,7 +36,7 @@ func Init() {
 	r := gin.New()
 	r.Use(gin.Recovery())
 	r.Use(log.Logger())
-	r.Use(validate.Check())
+	r.Use(Check())
 
 	router = r
 }
@@ -92,17 +91,17 @@ func Register(version, method, source string, callback func(*gin.Context)) {
 }
 
 func OK(c *gin.Context, data interface{}) {
-	var pi *validate.PageInfo
+	var pi *PageInfo
 
 	i, s := c.GetInt("pageIndex"), c.GetInt("pageSize")
 	if i > 0 && s > 0 {
-		pi = &validate.PageInfo{
+		pi = &PageInfo{
 			PageIndex: i,
 			PageSize:  s,
 		}
 	}
-	c.JSON(http.StatusOK, &validate.Response{
-		Common: &validate.Common{
+	c.JSON(http.StatusOK, &Response{
+		Common: &Common{
 			MsgType:   "response",
 			Timestamp: utils.GetNowTs(),
 			RequestID: c.GetString("requestID"),
@@ -116,8 +115,20 @@ func OK(c *gin.Context, data interface{}) {
 }
 
 func Fail(c *gin.Context, err *terr.TError) {
-	c.JSON(http.StatusOK, &validate.Response{
-		Common: &validate.Common{
+	c.JSON(http.StatusOK, &Response{
+		Common: &Common{
+			MsgType:   "response",
+			Timestamp: utils.GetNowTs(),
+			RequestID: c.GetString("requestID"),
+		},
+		ErrorCode: int(err.Code),
+		ErrorMsg:  err.Desc,
+	})
+}
+
+func Abort(c *gin.Context, err *terr.TError) {
+	c.AbortWithStatusJSON(http.StatusOK, &Response{
+		Common: &Common{
 			MsgType:   "response",
 			Timestamp: utils.GetNowTs(),
 			RequestID: c.GetString("requestID"),
