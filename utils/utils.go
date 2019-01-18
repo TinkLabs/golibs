@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"math/rand"
@@ -56,10 +57,12 @@ func ReadBody(reader io.Reader) string {
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(reader)
 
-	s := buf.String()
-	s = strings.Replace(s, "\n", "\\n", -1)
-	s = strings.Replace(s, "\t", "\\t", -1)
-	return s
+	newBuf := new(bytes.Buffer)
+	if err := json.Compact(newBuf, buf.Bytes()); err != nil {
+		return buf.String()
+	}
+
+	return newBuf.String()
 }
 
 func GetFreePort() (int, error) {
