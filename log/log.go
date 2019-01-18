@@ -78,10 +78,10 @@ func Logger() gin.HandlerFunc {
 		rdr1 := ioutil.NopCloser(bytes.NewBuffer(buf))
 		rdr2 := ioutil.NopCloser(bytes.NewBuffer(buf))
 
+		c.Request.Body = rdr2
+
 		blw := &bodyLogWriter{body: bytes.NewBufferString(""), ResponseWriter: c.Writer}
 		c.Writer = blw
-
-		c.Request.Body = rdr2
 
 		// Process request
 		c.Next()
@@ -93,7 +93,7 @@ func Logger() gin.HandlerFunc {
 		clientIP := c.ClientIP()
 		method := c.Request.Method
 		statusCode := c.Writer.Status()
-		InfoWithFields("", Fields{"request": utils.ReadBody(rdr1), "response": blw.body.String(),
+		DebugWithFields("", Fields{"request": utils.ReadBody(rdr1), "response": blw.body.String(),
 			"clientIP": clientIP, "path": path, "method": method, "statusCode": statusCode, "latency": latency})
 	}
 }
