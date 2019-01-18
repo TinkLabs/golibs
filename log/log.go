@@ -25,6 +25,16 @@ var (
 // Fields wraps logrus.Fields, which is a map[string]interface{}
 type Fields logrus.Fields
 
+type bodyLogWriter struct {
+	gin.ResponseWriter
+	body *bytes.Buffer
+}
+
+func (w bodyLogWriter) Write(b []byte) (int, error) {
+	w.body.Write(b)
+	return w.ResponseWriter.Write(b)
+}
+
 func Init() {
 	logger = logrus.New()
 	cf := cmd.GetCmdFlag()
@@ -35,11 +45,11 @@ func Init() {
 		log.Fatal(err)
 	}
 	// Log as JSON instead of the default ASCII formatter.
-	// log.SetFormatter(&log.JSONFormatter{})
-	logger.SetFormatter(&logrus.TextFormatter{
-		DisableColors: false,
-		FullTimestamp: true,
-	})
+	logger.SetFormatter(&logrus.JSONFormatter{})
+	// logger.SetFormatter(&logrus.TextFormatter{
+	// 	DisableColors: false,
+	// 	FullTimestamp: true,
+	// })
 
 	// Output to stdout instead of the default stderr
 	// Can be any io.Writer, see below for File example
@@ -68,6 +78,9 @@ func Logger() gin.HandlerFunc {
 		rdr1 := ioutil.NopCloser(bytes.NewBuffer(buf))
 		rdr2 := ioutil.NopCloser(bytes.NewBuffer(buf))
 
+		blw := &bodyLogWriter{body: bytes.NewBufferString(""), ResponseWriter: c.Writer}
+		c.Writer = blw
+
 		c.Request.Body = rdr2
 
 		// Process request
@@ -80,8 +93,8 @@ func Logger() gin.HandlerFunc {
 		clientIP := c.ClientIP()
 		method := c.Request.Method
 		statusCode := c.Writer.Status()
-		InfoWithFields(fmt.Sprintf("request.params<%+v> request.body<%s>", c.Request.URL.Query(), utils.ReadBody(rdr1)),
-			Fields{"clientIP": clientIP, "path": path, "method": method, "statusCode": statusCode, "latency": latency})
+		InfoWithFields("", Fields{"request": utils.ReadBody(rdr1), "response": blw.body.String(),
+			"clientIP": clientIP, "path": path, "method": method, "statusCode": statusCode, "latency": latency})
 	}
 }
 
