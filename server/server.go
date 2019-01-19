@@ -104,7 +104,7 @@ func OK(c *gin.Context, data interface{}) {
 			PageSize:  s,
 		}
 	}
-	c.Header("requestID", c.GetHeader("requestID"))
+	c.Header("Request-Id", c.GetHeader("Request-Id"))
 	c.JSON(http.StatusOK, &Response{
 		Common: &Common{
 			MsgType:   "response",
@@ -119,7 +119,7 @@ func OK(c *gin.Context, data interface{}) {
 }
 
 func Fail(c *gin.Context, err *terr.TError) {
-	c.Header("requestID", c.GetHeader("requestID"))
+	c.Header("Request-Id", c.GetHeader("Request-Id"))
 	c.JSON(http.StatusOK, &Response{
 		Common: &Common{
 			MsgType:   "response",
@@ -131,7 +131,7 @@ func Fail(c *gin.Context, err *terr.TError) {
 }
 
 func Abort(c *gin.Context, err *terr.TError) {
-	c.Header("requestID", c.GetHeader("requestID"))
+	c.Header("Request-Id", c.GetHeader("Request-Id"))
 	c.AbortWithStatusJSON(http.StatusOK, &Response{
 		Common: &Common{
 			MsgType:   "response",
