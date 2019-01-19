@@ -17,7 +17,6 @@ func init() {
 type Common struct {
 	MsgType   string `json:"msgType" validate:"required"`
 	Timestamp int64  `json:"timestamp" validate:"required,gte=0"`
-	RequestID string `json:"requestID" validate:"required"`
 }
 
 type PageInfo struct {
@@ -70,8 +69,6 @@ func Check() gin.HandlerFunc {
 			Abort(c, terr.ErrRequest)
 			return
 		}
-
-		c.Set("requestID", r.Common.RequestID)
 
 		if v, isExist := r.Param["pageIndex"]; isExist {
 			if v, ok := v.(float64); !ok {

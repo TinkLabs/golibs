@@ -104,11 +104,11 @@ func OK(c *gin.Context, data interface{}) {
 			PageSize:  s,
 		}
 	}
+	c.Header("requestID", c.GetHeader("requestID"))
 	c.JSON(http.StatusOK, &Response{
 		Common: &Common{
 			MsgType:   "response",
 			Timestamp: utils.GetNowTs(),
-			RequestID: c.GetString("requestID"),
 		},
 		PageInfo:  pi,
 		Total:     c.GetInt("total"),
@@ -119,11 +119,11 @@ func OK(c *gin.Context, data interface{}) {
 }
 
 func Fail(c *gin.Context, err *terr.TError) {
+	c.Header("requestID", c.GetHeader("requestID"))
 	c.JSON(http.StatusOK, &Response{
 		Common: &Common{
 			MsgType:   "response",
 			Timestamp: utils.GetNowTs(),
-			RequestID: c.GetString("requestID"),
 		},
 		ErrorCode: int(err.Code),
 		ErrorMsg:  err.Desc,
@@ -131,11 +131,11 @@ func Fail(c *gin.Context, err *terr.TError) {
 }
 
 func Abort(c *gin.Context, err *terr.TError) {
+	c.Header("requestID", c.GetHeader("requestID"))
 	c.AbortWithStatusJSON(http.StatusOK, &Response{
 		Common: &Common{
 			MsgType:   "response",
 			Timestamp: utils.GetNowTs(),
-			RequestID: c.GetString("requestID"),
 		},
 		ErrorCode: int(err.Code),
 		ErrorMsg:  err.Desc,
