@@ -13,6 +13,10 @@ var (
 )
 
 func Init() {
+	//in case no db service
+	if config.TakeDbUrl() == "null" {
+		return
+	}
 	db, err := gorm.Open("mysql", config.TakeDbUrl())
 	if err != nil {
 		panic(err)
