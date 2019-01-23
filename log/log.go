@@ -93,8 +93,16 @@ func Logger() gin.HandlerFunc {
 		clientIP := c.ClientIP()
 		method := c.Request.Method
 		statusCode := c.Writer.Status()
-		DebugWithFields("", Fields{"request": utils.ReadBody(rdr1), "response": blw.body.String(),
+		reqStr := utils.ReadBody(rdr1)
+		if c.ContentType() == "multipart/form-data" {
+			f, _ := c.FormFile("file")
+			if f != nil {
+				reqStr = f.Filename
+			}
+		}
+		DebugWithFields("", Fields{"request": reqStr, "response": blw.body.String(),
 			"clientIP": clientIP, "path": path, "method": method, "statusCode": statusCode, "latency": latency})
+
 	}
 }
 
