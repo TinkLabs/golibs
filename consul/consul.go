@@ -31,6 +31,7 @@ func Init() {
 	cf := cmd.GetCmdFlag()
 
 	dc := consul.DefaultConfig()
+	dc.Token = cf.ConsulAccessToken
 	dc.Address = fmt.Sprintf("%s:%s", cf.ConsulAddress, cf.ConsulPort)
 	c, err := consul.NewClient(dc)
 	if err != nil {
@@ -81,7 +82,7 @@ func (c *ConsulClient) Register() {
 func (c *ConsulClient) updateTTL() {
 	ticker := time.NewTicker(c.TTL / 2)
 	for range ticker.C {
-		if err := c.Agent.PassTTL("service:"+c.ServerID, ""); err != nil {
+		if err := c.Agent.UpdateTTL("service:"+c.ServerID, "I'm alive", "pass"); err != nil {
 			log.Error(err)
 		}
 	}

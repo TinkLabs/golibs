@@ -9,13 +9,14 @@ import (
 )
 
 type CmdFlag struct {
-	Debug         bool
-	Env           string
-	ServerName    string
-	ServerAddress string
-	ServerPort    int
-	ConsulAddress string
-	ConsulPort    string
+	Debug             bool
+	Env               string
+	ServerName        string
+	ServerAddress     string
+	ServerPort        int
+	ConsulAddress     string
+	ConsulPort        string
+	ConsulAccessToken string
 }
 
 var cmdFlag *CmdFlag
@@ -27,6 +28,7 @@ func Init() {
 	serverName := GetEnvPanic("SERVER_NAME")
 	consulAddress := GetEnvWithDefault("CONSUL_ADDRESS", "http://127.0.0.1")
 	consulPort := GetEnvWithDefault("CONSUL_PORT", "8500")
+	consulAccessToken := GetEnvWithDefault("CONSUL_ACCESS_TOKEN", "")
 
 	if GetEnvWithDefault("DONT_CHECK_ETH_NAME", "false") == "false" {
 		dontCheck = false
@@ -52,12 +54,13 @@ func Init() {
 	}
 
 	cmdFlag = &CmdFlag{
-		Debug:         debug,
-		ServerName:    serverName,
-		ServerAddress: serverAddress,
-		ServerPort:    port,
-		ConsulAddress: consulAddress,
-		ConsulPort:    consulPort,
+		Debug:             debug,
+		ServerName:        serverName,
+		ServerAddress:     serverAddress,
+		ServerPort:        port,
+		ConsulAddress:     consulAddress,
+		ConsulPort:        consulPort,
+		ConsulAccessToken: consulAccessToken,
 	}
 }
 
