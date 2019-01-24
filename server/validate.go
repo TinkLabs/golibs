@@ -56,8 +56,13 @@ func GetPageInfo(c *gin.Context) (*PageInfo, *terr.TError) {
 func Check() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
-		r := Request{}
 
+		if c.ContentType() == "multipart/form-data" {
+			c.Next()
+			return
+		}
+
+		r := Request{}
 		if err := c.ShouldBindJSON(&r); err != nil {
 			log.Warn(err)
 			Abort(c, terr.ErrRequest)
