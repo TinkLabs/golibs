@@ -15,6 +15,12 @@ func (e *TError) Error() string {
 	return string(b)
 }
 
+var (
+	ErrServer = &TError{Code: 10000, Desc: "server internal error"}
+
+	ErrRequest = &TError{Code: 20000, Desc: "request params is incorrect"}
+)
+
 func (e *TError) AddExtra(extra string) (err *TError) {
 	temp := *e
 
