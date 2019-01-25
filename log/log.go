@@ -100,8 +100,8 @@ func Logger() gin.HandlerFunc {
 				reqStr = f.Filename
 			}
 		}
-		DebugWithFields("", Fields{"request": reqStr, "response": blw.body.String(),
-			"clientIP": clientIP, "path": path, "method": method, "statusCode": statusCode, "latency": latency})
+		DebugWithFields("", Fields{"header": c.Request.Header, "request": reqStr, "response": blw.body.String(), "clientIP": clientIP,
+			"path": path, "method": method, "statusCode": statusCode, "latency": latency})
 
 	}
 }
