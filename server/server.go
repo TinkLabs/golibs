@@ -120,13 +120,14 @@ func OK(c *gin.Context, data interface{}) {
 
 func Fail(c *gin.Context, err *terr.TError) {
 	c.Header("Request-Id", c.GetHeader("Request-Id"))
+
 	c.JSON(http.StatusOK, &Response{
 		Common: &Common{
 			MsgType:   "response",
 			Timestamp: utils.GetNowTs(),
 		},
 		ErrorCode: int(err.Code),
-		ErrorMsg:  err.Error(),
+		ErrorMsg:  err.Message(),
 	})
 }
 
@@ -138,6 +139,6 @@ func Abort(c *gin.Context, err *terr.TError) {
 			Timestamp: utils.GetNowTs(),
 		},
 		ErrorCode: int(err.Code),
-		ErrorMsg:  err.Error(),
+		ErrorMsg:  err.Message(),
 	})
 }

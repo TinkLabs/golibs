@@ -2,6 +2,7 @@ package error
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 type TError struct {
@@ -28,4 +29,14 @@ func (e *TError) AddExtra(extra string) (err *TError) {
 	err.Extra = extra
 
 	return err
+}
+
+func (e *TError) Message() (msg string) {
+	if e.Extra != "" {
+		msg = fmt.Sprintf("%s(%s)", e.Desc, e.Extra)
+	} else {
+		msg = e.Desc
+	}
+
+	return msg
 }
