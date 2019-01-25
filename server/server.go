@@ -126,7 +126,7 @@ func Fail(c *gin.Context, err *terr.TError) {
 			Timestamp: utils.GetNowTs(),
 		},
 		ErrorCode: int(err.Code),
-		ErrorMsg:  err.Desc,
+		ErrorMsg:  err.Error(),
 	})
 }
 
@@ -138,6 +138,6 @@ func Abort(c *gin.Context, err *terr.TError) {
 			Timestamp: utils.GetNowTs(),
 		},
 		ErrorCode: int(err.Code),
-		ErrorMsg:  err.Desc,
+		ErrorMsg:  err.Error(),
 	})
 }
