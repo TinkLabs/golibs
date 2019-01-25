@@ -5,8 +5,9 @@ import (
 )
 
 type TError struct {
-	Code int32  `json:"code"`
-	Desc string `json:"desc"`
+	Code  int32  `json:"code"`
+	Desc  string `json:"desc"`
+	Extra string `json:"extra,omitempty"`
 }
 
 func (e *TError) Error() string {
@@ -14,8 +15,11 @@ func (e *TError) Error() string {
 	return string(b)
 }
 
-var (
-	ErrServer = &TError{Code: 10000, Desc: "server internal error"}
+func (e *TError) AddExtra(extra string) (err *TError) {
+	temp := *e
 
-	ErrRequest = &TError{Code: 20000, Desc: "request params is incorrect"}
-)
+	err = &temp
+	err.Extra = extra
+
+	return err
+}

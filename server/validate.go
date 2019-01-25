@@ -47,7 +47,7 @@ func GetPageInfo(c *gin.Context) (*PageInfo, *terr.TError) {
 
 	if err := validate.Struct(pi); err != nil {
 		log.Warn(err)
-		return nil, terr.ErrRequest
+		return nil, terr.ErrRequest.AddExtra("pageInfo is incorrect")
 	}
 
 	return pi, nil
@@ -65,20 +65,20 @@ func Check() gin.HandlerFunc {
 		r := Request{}
 		if err := c.ShouldBindJSON(&r); err != nil {
 			log.Warn(err)
-			Abort(c, terr.ErrRequest)
+			Abort(c, terr.ErrRequest.AddExtra("json format is incorrect"))
 			return
 		}
 
 		if err := validate.Struct(&r); err != nil {
 			log.Warn(err)
-			Abort(c, terr.ErrRequest)
+			Abort(c, terr.ErrRequest.AddExtra("common and param is required"))
 			return
 		}
 
 		if v, isExist := r.Param["pageIndex"]; isExist {
 			if v, ok := v.(float64); !ok {
 				log.Error("pageIndex type is wrong")
-				Abort(c, terr.ErrRequest)
+				Abort(c, terr.ErrRequest.AddExtra("pageIndex type should be int"))
 				return
 			} else {
 				c.Set("pageIndex", int(v))
@@ -88,7 +88,7 @@ func Check() gin.HandlerFunc {
 		if v, isExist := r.Param["pageSize"]; isExist {
 			if v, ok := v.(float64); !ok {
 				log.Error("pagSize type is wrong")
-				Abort(c, terr.ErrRequest)
+				Abort(c, terr.ErrRequest.AddExtra("pageIndex type should be int"))
 				return
 			} else {
 				c.Set("pageSize", int(v))
