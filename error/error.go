@@ -18,6 +18,7 @@ func (e *TError) Error() string {
 
 var (
 	ErrServer = &TError{Code: 10000, Desc: "server internal error"}
+	ErrConsul = &TError{Code: 10001, Desc: "consul error"}
 
 	ErrRequest = &TError{Code: 20000, Desc: "request params is incorrect"}
 )

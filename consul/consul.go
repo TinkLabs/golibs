@@ -20,6 +20,7 @@ type ConsulClient struct {
 	ServerPort    int
 	TTL           time.Duration
 	Agent         *consul.Agent
+	Health        *consul.Health
 	KV            *consul.KV
 }
 
@@ -39,6 +40,7 @@ func Init() {
 	}
 
 	agent := c.Agent()
+	health := c.Health()
 	kv := c.KV()
 
 	uuid, err := utils.UUID()
@@ -55,6 +57,7 @@ func Init() {
 		ServerPort:    cf.ServerPort,
 		TTL:           time.Second * 30,
 		Agent:         agent,
+		Health:        health,
 		KV:            kv,
 	}
 }
