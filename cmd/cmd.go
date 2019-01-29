@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"strconv"
@@ -51,6 +52,11 @@ func Init() {
 
 	if GetEnvWithDefault("RANDOM_PORT", "false") == "true" {
 		port = utils.GetPort()
+	}
+
+	consulAddressFromFlag := flag.String("consul_address", "", "consul address")
+	if *consulAddressFromFlag != "" {
+		consulAddress = *consulAddressFromFlag
 	}
 
 	cmdFlag = &CmdFlag{
