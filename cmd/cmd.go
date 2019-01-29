@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"flag"
 	"fmt"
 	"os"
 	"strconv"
@@ -27,6 +26,7 @@ func Init() {
 	var debug, dontCheck bool
 
 	serverName := GetEnvPanic("SERVER_NAME")
+	profileEnv := GetEnvWithDefault("PROFILE_ENV", "dev")
 	consulAddress := GetEnvWithDefault("CONSUL_ADDRESS", "http://127.0.0.1")
 	consulPort := GetEnvWithDefault("CONSUL_PORT", "8500")
 	consulAccessToken := GetEnvWithDefault("CONSUL_ACCESS_TOKEN", "")
@@ -54,11 +54,8 @@ func Init() {
 		port = utils.GetPort()
 	}
 
-	consulAddressPtr := flag.String("consul_address", "", "consul address")
-
-	flag.Parse()
-	if *consulAddressPtr != "" {
-		consulAddress = *consulAddressPtr
+	if profileEnv == "production" {
+		consulAddress = utils.GetConsulAddressFromMetadata()
 	}
 
 	cmdFlag = &CmdFlag{

@@ -5,8 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"math/rand"
 	"net"
+	"net/http"
 	"os"
 	"os/signal"
 	"reflect"
@@ -162,4 +164,19 @@ func GetIntranetIp(dontCheckPrefix bool) string {
 	}
 
 	panic("cant find intranet ip")
+}
+
+func GetConsulAddressFromMetadata() string {
+	resp, err := http.Get("http://169.254.169.254/latest/meta-data/local-ipv4")
+	if err != nil {
+		panic(fmt.Sprintf("get meta:%v", err))
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		panic(fmt.Sprintf("read meta:%v", err))
+	}
+
+	return fmt.Sprintf("http://%s", string(body))
 }
