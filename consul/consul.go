@@ -36,7 +36,7 @@ func Init() {
 	dc.Address = fmt.Sprintf("%s:%s", cf.ConsulAddress, cf.ConsulPort)
 	c, err := consul.NewClient(dc)
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("new consul client:%v", err))
 	}
 
 	agent := c.Agent()
@@ -45,7 +45,7 @@ func Init() {
 
 	uuid, err := utils.UUID()
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("generate uuid:%v", err))
 	}
 
 	id := fmt.Sprintf("%s-%s", cf.ServerName, uuid)
@@ -75,7 +75,7 @@ func (c *ConsulClient) Register() {
 	}
 
 	if err := cc.Agent.ServiceRegister(def); err != nil {
-		panic(err)
+		panic(fmt.Sprintf("register:%v", err))
 	}
 	log.Info("Register service:" + c.ServerID)
 

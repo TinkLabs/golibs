@@ -82,7 +82,7 @@ func GetFreePort() (int, error) {
 func GetPort() int {
 	port, err := GetFreePort()
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("get free port:%v", err))
 	}
 	return port
 }
@@ -131,7 +131,7 @@ func Decode(source map[string]interface{}, target interface{}) error {
 
 	decoder, err := mapstructure.NewDecoder(&config)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	return decoder.Decode(source)
@@ -140,7 +140,7 @@ func Decode(source map[string]interface{}, target interface{}) error {
 func GetIntranetIp(dontCheckPrefix bool) string {
 	interfaces, err := net.Interfaces()
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("get interfaces:%v", err))
 	}
 
 	fmt.Printf("interfaces = %+v\n", interfaces)

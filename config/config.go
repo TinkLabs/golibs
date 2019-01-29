@@ -18,12 +18,12 @@ func Init() {
 	configPath := fmt.Sprintf("b2c/%s/config", cf.ServerName)
 	pair, _, err := cc.KV.Get(configPath, nil)
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("get configuration from consul:%v", err))
 	}
 
 	err = json.Unmarshal(pair.Value, &Data)
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("config is not json:%v", err))
 	}
 }
 

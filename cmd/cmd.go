@@ -46,7 +46,7 @@ func Init() {
 
 	port, err := strconv.Atoi(GetEnvWithDefault("SERVER_PORT", "8080"))
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("server port:%v", err))
 	}
 
 	if GetEnvWithDefault("RANDOM_PORT", "false") == "true" {
