@@ -54,9 +54,11 @@ func Init() {
 		port = utils.GetPort()
 	}
 
-	consulAddressFromFlag := flag.String("consul_address", "", "consul address")
-	if *consulAddressFromFlag != "" {
-		consulAddress = *consulAddressFromFlag
+	consulAddressPtr := flag.String("consul_address", "", "consul address")
+
+	flag.Parse()
+	if *consulAddressPtr != "" {
+		consulAddress = *consulAddressPtr
 	}
 
 	cmdFlag = &CmdFlag{
