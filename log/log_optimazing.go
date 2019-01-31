@@ -1,4 +1,4 @@
-// +build !optimazing
+// +build optimazing
 
 package log
 
@@ -9,8 +9,6 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"runtime"
-	"strings"
 	"time"
 
 	"github.com/Sirupsen/logrus"
@@ -116,7 +114,6 @@ func SetLogFormatter(formatter logrus.Formatter) {
 func Debug(args ...interface{}) {
 	if logger.Level >= logrus.DebugLevel {
 		entry := logger.WithFields(logrus.Fields{})
-		entry.Data["file"] = fileInfo(2)
 		entry.Debug(args...)
 	}
 }
@@ -125,7 +122,6 @@ func Debug(args ...interface{}) {
 func DebugWithFields(l interface{}, f Fields) {
 	if logger.Level >= logrus.DebugLevel {
 		entry := logger.WithFields(logrus.Fields(f))
-		entry.Data["file"] = fileInfo(2)
 		entry.Debug(l)
 	}
 }
@@ -134,7 +130,6 @@ func DebugWithFields(l interface{}, f Fields) {
 func Info(args ...interface{}) {
 	if logger.Level >= logrus.InfoLevel {
 		entry := logger.WithFields(logrus.Fields{})
-		entry.Data["file"] = fileInfo(2)
 		entry.Info(args...)
 	}
 }
@@ -143,7 +138,6 @@ func Info(args ...interface{}) {
 func InfoWithFields(l interface{}, f Fields) {
 	if logger.Level >= logrus.InfoLevel {
 		entry := logger.WithFields(logrus.Fields(f))
-		entry.Data["file"] = fileInfo(2)
 		entry.Info(l)
 	}
 }
@@ -152,7 +146,6 @@ func InfoWithFields(l interface{}, f Fields) {
 func Warn(args ...interface{}) {
 	if logger.Level >= logrus.WarnLevel {
 		entry := logger.WithFields(logrus.Fields{})
-		entry.Data["file"] = fileInfo(2)
 		entry.Warn(args...)
 	}
 }
@@ -161,7 +154,6 @@ func Warn(args ...interface{}) {
 func WarnWithFields(l interface{}, f Fields) {
 	if logger.Level >= logrus.WarnLevel {
 		entry := logger.WithFields(logrus.Fields(f))
-		entry.Data["file"] = fileInfo(2)
 		entry.Warn(l)
 	}
 }
@@ -170,7 +162,6 @@ func WarnWithFields(l interface{}, f Fields) {
 func Error(args ...interface{}) {
 	if logger.Level >= logrus.ErrorLevel {
 		entry := logger.WithFields(logrus.Fields{})
-		entry.Data["file"] = fileInfo(2)
 		entry.Error(args...)
 	}
 }
@@ -179,7 +170,6 @@ func Error(args ...interface{}) {
 func ErrorWithFields(l interface{}, f Fields) {
 	if logger.Level >= logrus.ErrorLevel {
 		entry := logger.WithFields(logrus.Fields(f))
-		entry.Data["file"] = fileInfo(2)
 		entry.Error(l)
 	}
 }
@@ -188,7 +178,6 @@ func ErrorWithFields(l interface{}, f Fields) {
 func Fatal(args ...interface{}) {
 	if logger.Level >= logrus.FatalLevel {
 		entry := logger.WithFields(logrus.Fields{})
-		entry.Data["file"] = fileInfo(2)
 		entry.Fatal(args...)
 	}
 }
@@ -197,7 +186,6 @@ func Fatal(args ...interface{}) {
 func FatalWithFields(l interface{}, f Fields) {
 	if logger.Level >= logrus.FatalLevel {
 		entry := logger.WithFields(logrus.Fields(f))
-		entry.Data["file"] = fileInfo(2)
 		entry.Fatal(l)
 	}
 }
@@ -206,7 +194,6 @@ func FatalWithFields(l interface{}, f Fields) {
 func Panic(args ...interface{}) {
 	if logger.Level >= logrus.PanicLevel {
 		entry := logger.WithFields(logrus.Fields{})
-		entry.Data["file"] = fileInfo(2)
 		entry.Panic(args...)
 	}
 }
@@ -215,21 +202,6 @@ func Panic(args ...interface{}) {
 func PanicWithFields(l interface{}, f Fields) {
 	if logger.Level >= logrus.PanicLevel {
 		entry := logger.WithFields(logrus.Fields(f))
-		entry.Data["file"] = fileInfo(2)
 		entry.Panic(l)
 	}
-}
-
-func fileInfo(skip int) string {
-	_, file, line, ok := runtime.Caller(skip)
-	if !ok {
-		file = "<???>"
-		line = 1
-	} else {
-		slash := strings.LastIndex(file, "/")
-		if slash >= 0 {
-			file = file[slash+1:]
-		}
-	}
-	return fmt.Sprintf("%s:%d", file, line)
 }
