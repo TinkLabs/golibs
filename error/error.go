@@ -6,7 +6,7 @@ import (
 )
 
 type TError struct {
-	Code  int32  `json:"code"`
+	Code  int    `json:"code"`
 	Desc  string `json:"desc"`
 	Extra string `json:"extra,omitempty"`
 }
