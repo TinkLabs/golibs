@@ -72,8 +72,6 @@ func Init() {
 func Logger() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
-		// Start timer
-		start := time.Now()
 		path := c.Request.URL.Path
 
 		buf, _ := ioutil.ReadAll(c.Request.Body)
@@ -84,6 +82,9 @@ func Logger() gin.HandlerFunc {
 
 		blw := &bodyLogWriter{body: bytes.NewBufferString(""), ResponseWriter: c.Writer}
 		c.Writer = blw
+
+		// Start timer
+		start := time.Now()
 
 		// Process request
 		c.Next()
