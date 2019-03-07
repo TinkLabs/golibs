@@ -11,8 +11,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 
 	"github.com/tinklabs/golibs/cmd"
 	"github.com/tinklabs/golibs/utils"
