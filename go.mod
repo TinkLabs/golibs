@@ -2,6 +2,8 @@ module github.com/tinklabs/golibs
 
 replace github.com/Sirupsen/logrus v1.3.0 => github.com/sirupsen/logrus v1.3.0
 
+go 1.11
+
 require (
 	cloud.google.com/go v0.36.0 // indirect
 	github.com/Sirupsen/logrus v1.3.0
@@ -33,7 +35,6 @@ require (
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/sirupsen/logrus v1.3.0 // indirect
 	github.com/ugorji/go/codec v0.0.0-20190204201341-e444a5086c43 // indirect
-	golang.org/x/net v0.0.0-20190301231341-16b79f2e4e95 // indirect
 	google.golang.org/appengine v1.4.0 // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
