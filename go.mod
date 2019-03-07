@@ -2,6 +2,8 @@ module github.com/tinklabs/golibs
 
 go 1.11
 
+replace github.com/Sirupsen/logrus v1.3.0 => github.com/sirupsen/logrus v1.3.0
+
 require (
 	cloud.google.com/go v0.36.0 // indirect
 	github.com/denisenkom/go-mssqldb v0.0.0-20190204142019-df6d76eb9289 // indirect
