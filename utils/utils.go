@@ -18,6 +18,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	"github.com/mitchellh/mapstructure"
+	"github.com/shopspring/decimal"
 )
 
 var letterRunes = []rune("1234567890")
@@ -115,19 +116,22 @@ func SnameMapKey(m map[string]interface{}) map[string]interface{} {
 }
 
 func Decode(source map[string]interface{}, target interface{}) error {
-	stringToDateTimeHook := func(
+	customHook := func(
 		f reflect.Type,
 		t reflect.Type,
 		data interface{}) (interface{}, error) {
 		if t == reflect.TypeOf(time.Time{}) && f == reflect.TypeOf("") {
 			return time.Parse(time.RFC3339, data.(string))
 		}
+		if t == reflect.TypeOf(decimal.Decimal{}) && f == reflect.TypeOf(1.0) {
+			return decimal.NewFromFloat(data.(float64)), nil
+		}
 
 		return data, nil
 	}
 
 	config := mapstructure.DecoderConfig{
-		DecodeHook: stringToDateTimeHook,
+		DecodeHook: customHook,
 		Result:     &target,
 	}
 
