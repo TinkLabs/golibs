@@ -88,7 +88,7 @@ func Check() gin.HandlerFunc {
 		if v, isExist := r.Param["pageSize"]; isExist {
 			if v, ok := v.(float64); !ok {
 				log.Error("pagSize type is wrong")
-				Abort(c, terr.ErrRequest.AddExtra("pageIndex type should be int"))
+				Abort(c, terr.ErrRequest.AddExtra("pageSize type should be int"))
 				return
 			} else {
 				c.Set("pageSize", int(v))
