@@ -100,3 +100,11 @@ func Check() gin.HandlerFunc {
 		c.Next()
 	}
 }
+
+func Validate(s interface{}) error {
+	if err := validate.Struct(s); err != nil {
+		return err
+	}
+
+	return nil
+}
