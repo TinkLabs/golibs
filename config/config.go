@@ -38,3 +38,27 @@ func TakeDbUrl() string {
 		panic("db url not exist")
 	}
 }
+
+func TakeCacheAddressAndPassword() (addr string, pw string) {
+	if v, isExist := Data["redis_address"]; isExist {
+		if v, ok := v.(string); ok {
+			addr = v
+		} else {
+			panic("redis address is not string")
+		}
+	} else {
+		panic("redis address not exist")
+	}
+
+	if v, isExist := Data["redis_password"]; isExist {
+		if v, ok := v.(string); ok {
+			pw = v
+		} else {
+			panic("redis password is not string")
+		}
+	} else {
+		panic("redis password not exist")
+	}
+
+	return
+}
