@@ -89,7 +89,7 @@ func Logger() gin.HandlerFunc {
 
 		// Stop timer
 		end := time.Now()
-		latency := end.Sub(start)
+		latency := int64(end.Sub(start).Seconds() * 1000)
 
 		clientIP := c.ClientIP()
 		method := c.Request.Method
