@@ -120,8 +120,13 @@ func Decode(source map[string]interface{}, target interface{}) error {
 		f reflect.Type,
 		t reflect.Type,
 		data interface{}) (interface{}, error) {
-		if t == reflect.TypeOf(time.Time{}) && f == reflect.TypeOf("") {
-			return time.Parse(time.RFC3339, data.(string))
+		if t == reflect.TypeOf(&time.Time{}) && f == reflect.TypeOf("") {
+			rv, err := time.Parse(time.RFC3339, data.(string))
+			if err != nil {
+				return nil, err
+			}
+
+			return &rv, nil
 		}
 		if t == reflect.TypeOf(decimal.Decimal{}) && f == reflect.TypeOf(1.0) {
 			return decimal.NewFromFloat(data.(float64)), nil
